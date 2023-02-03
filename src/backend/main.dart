@@ -39,8 +39,8 @@ class _MyAppState extends State<MyApp> {
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
-    const apiKey = '';
-    const devId = 'testing';
+    const apiKey = $API_KEY;
+    const devId = $DEV_ID;
     var headers = {'x-api-key': apiKey, 'dev-id': devId};
     const connection = Connection.allDevices;
     const datatypes = [DataType.heartRate];
