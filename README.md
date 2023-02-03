@@ -1,2 +1,3 @@
-A sample command-line application with an entrypoint in `bin/`, library code
-in `lib/`, and example unit test in `test/`.
+- Debug frontend with `npm start`
+- Build frontend with `npm run build`
+- Server frontend and backend with `node server.js`
