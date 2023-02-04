@@ -17,16 +17,14 @@ var options = {
 app.use(bodyParser.raw(options));
 app.use(express.static(path.join(__dirname, "build")));
 
-// Server application
-app.get("/*", function(req, res) {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
-});
-
 const fetch = require("node-fetch-commonjs");
 const WebSocket = require("ws");
 
 const WS_CONNECTION = "wss://ws.tryterra.co/connect";
 const WS_REST = "https://ws.tryterra.co";
+
+const hr_list = [];
+const time_list = [];
 
 //Generates a token for a developer
 const generateToken = new Promise((resolve, reject) => {
@@ -79,6 +77,7 @@ function initWS(token) {
     }
     if (message["op"] == 5) {
       hr_list.push(message.d.val);
+      time_list.push(message.d.ts);
       console.log("heart rate list: " + hr_list);
     }
   });
@@ -113,9 +112,19 @@ generateToken
     console.log(error);
   });
 
-app.get('/api/data', (req,res) => {
-  const data = [1,2,3,4,5];
-  res.json(data);
+app.get("/api/hr", function (req, res) {
+  const data = hr_list;
+  res.status(200).json(data);
+});
+
+app.get("/api/timestamps", function (req, res) {
+  const data = time_list;
+  res.status(200).json(data);
+});
+
+// Server application
+app.get("/*", function(req, res) {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
 const port = process.env.PORT;
