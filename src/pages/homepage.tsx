@@ -67,14 +67,7 @@ function StreamData() {
   // };
 
   return (
-    <>
       <Line data={chartData} />
-      <div>
-        {data.map((samples: number) => (
-          <div key={samples}>{samples.toString()}</div>
-        ))}
-      </div>
-    </>
   );
 }
 
