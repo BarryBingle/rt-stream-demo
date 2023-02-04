@@ -59,21 +59,21 @@ function StreamData() {
 
   let currhr = data[data.length - 1];
 
-  // const options: ChartOptions<"line"> = {
-  //   scales: {
-  //     y: {
-  //       suggestedMin: 0,
-  //       suggestedMax: 100,
-  //     },
-  //   },
-  // };
+  const options = {
+    scales: {
+      y: {
+        suggestedMin: 30,
+        suggestedMax: 150,
+      },
+    },
+  };
 
   return (
     <>
       <div className="w-full text-6xl text-red-700 align-center text-center">
         {currhr}
       </div>
-      <Line data={chartData} />
+      <Line data={chartData} options={options}/>
     </>
   );
 }
