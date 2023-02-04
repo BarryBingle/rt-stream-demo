@@ -3,6 +3,7 @@ import { Line } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
 
 import { Chart, registerables } from "chart.js";
+import { ChartOptions } from "chart.js";
 
 Chart.register(...registerables);
 
@@ -39,25 +40,18 @@ function StreamData() {
     ],
   });
 
-  const options = {
+  const options: ChartOptions<"line"> = {
     scales: {
-      y: [
-        {
-          type: "Heart rate",
-          ticks: {
-            min: 0,
-            max: 150,
-            stepSize: 10
-          },
-          
-        },
-      ],
+      y: {
+        suggestedMin: 0,
+        suggestedMax: 100,
+      },
     },
   };
 
   return (
     <>
-      <Line data={chartData} />
+      <Line data={chartData} options={options} />
       <div>
         {data.map((samples: number) => (
           <div key={samples}>{samples.toString()}</div>

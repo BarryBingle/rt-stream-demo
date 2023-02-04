@@ -23,8 +23,8 @@ const WebSocket = require("ws");
 const WS_CONNECTION = "wss://ws.tryterra.co/connect";
 const WS_REST = "https://ws.tryterra.co";
 
-const hr_list = [];
-const time_list = [];
+let hr_list = [];
+let time_list = [];
 
 //Generates a token for a developer
 const generateToken = new Promise((resolve, reject) => {
@@ -78,7 +78,6 @@ function initWS(token) {
     if (message["op"] == 5) {
       hr_list.push(message.d.val);
       time_list.push(message.d.ts);
-      console.log("heart rate list: " + hr_list);
     }
   });
 
@@ -114,11 +113,13 @@ generateToken
 
 app.get("/api/hr", function (req, res) {
   const data = hr_list;
+  console.log(hr_list);
   res.status(200).json(data);
 });
 
 app.get("/api/timestamps", function (req, res) {
   const data = time_list;
+  console.log(time_list);
   res.status(200).json(data);
 });
 
