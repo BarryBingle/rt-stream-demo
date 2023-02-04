@@ -22,6 +22,20 @@ const WS_CONNECTION = "wss://ws.tryterra.co/connect";
 let hr_list = [];
 let time_list = [];
 
+
+function generateHeartbeats() {
+    let r = Math.floor(Math.random() * 10 + 55);
+
+    hr_list.push(r);
+    let t = new Date()
+    time_list.push(t.getHours() + ":" + t.getMinutes() + ":" + t.getSeconds());
+
+   
+
+    setTimeout(() => { generateHeartbeats(); }, 1000);
+    
+}
+
 //Generates a token for a developer
 const generateToken = new Promise((resolve, reject) => {
   const options = {
@@ -39,6 +53,7 @@ const generateToken = new Promise((resolve, reject) => {
 });
 
 function initWS(token) {
+  generateHeartbeats();
   const socket = new WebSocket(WS_CONNECTION);
 
   var expectingHeartBeatAck = false;
@@ -63,7 +78,7 @@ function initWS(token) {
     var message = JSON.parse(event.data);
     if (message["op"] == 2) {
       heartBeat();
-      setInterval(heartBeat, message["d"]["heartbeat_interval"]);
+      setInterval(heartBeat, 1000);
       var payload = JSON.stringify(generatePayload(token));
       socket.send(payload);
       console.log("↑  " + payload);

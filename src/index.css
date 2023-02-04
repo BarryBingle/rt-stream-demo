@@ -9,6 +9,16 @@
   font-family: Poppins, Roboto, Mulish, sans-serif;
   scroll-behavior: smooth;
 }
+body {
+  background-color: rgb(240 233 255 );;
+}
+#canvas {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
 
 ::-webkit-scrollbar {
   width: 7px;
