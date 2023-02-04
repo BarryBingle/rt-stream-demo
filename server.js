@@ -4,9 +4,6 @@ const path = require("path");
 const bodyParser = require("body-parser");
 require("dotenv").config();
 
-// terra wrapper
-const { default: Terra } = require("terra-api");
-
 // server options
 const app = express();
 var options = {
@@ -21,7 +18,6 @@ const fetch = require("node-fetch-commonjs");
 const WebSocket = require("ws");
 
 const WS_CONNECTION = "wss://ws.tryterra.co/connect";
-const WS_REST = "https://ws.tryterra.co";
 
 let hr_list = [];
 let time_list = [];
@@ -47,7 +43,7 @@ function initWS(token) {
 
   var expectingHeartBeatAck = false;
 
-  socket.addEventListener("open", function(event) {
+  socket.addEventListener("open", function (event) {
     console.log("Connection Established");
   });
 
@@ -62,7 +58,7 @@ function initWS(token) {
     } else socket.close();
   }
 
-  socket.addEventListener("message", function(event) {
+  socket.addEventListener("message", function (event) {
     console.log("↓  " + event.data);
     var message = JSON.parse(event.data);
     if (message["op"] == 2) {
@@ -81,12 +77,12 @@ function initWS(token) {
     }
   });
 
-  socket.addEventListener("close", function(event) {
+  socket.addEventListener("close", function (event) {
     console.log("close");
     console.log(event.reason);
   });
 
-  socket.addEventListener("error", function(event) {
+  socket.addEventListener("error", function (event) {
     console.log("error");
     console.log(event);
   });
@@ -122,7 +118,7 @@ app.get("/api/timestamps", function (req, res) {
 });
 
 // Server application
-app.get("/*", function(req, res) {
+app.get("/*", function (req, res) {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 

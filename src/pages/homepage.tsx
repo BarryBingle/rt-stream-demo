@@ -66,9 +66,7 @@ function StreamData() {
   //   },
   // };
 
-  return (
-      <Line data={chartData} />
-  );
+  return <Line data={chartData} />;
 }
 
 export function HomePage() {
