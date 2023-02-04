@@ -57,6 +57,8 @@ function StreamData() {
     }
   }, [data, timestamps]);
 
+  let currhr = data[data.length - 1];
+
   // const options: ChartOptions<"line"> = {
   //   scales: {
   //     y: {
@@ -66,7 +68,14 @@ function StreamData() {
   //   },
   // };
 
-  return <Line data={chartData} />;
+  return (
+    <>
+      <div className="w-full text-6xl text-red-700 align-center text-center">
+        {currhr}
+      </div>
+      <Line data={chartData} />
+    </>
+  );
 }
 
 export function HomePage() {
