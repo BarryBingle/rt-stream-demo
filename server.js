@@ -113,13 +113,11 @@ generateToken
 
 app.get("/api/hr", function (req, res) {
   const data = hr_list;
-  console.log(hr_list);
   res.status(200).json(data);
 });
 
 app.get("/api/timestamps", function (req, res) {
   const data = time_list;
-  console.log(time_list);
   res.status(200).json(data);
 });
 

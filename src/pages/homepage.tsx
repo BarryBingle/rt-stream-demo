@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
-import { Chart as ChartJS } from "chart.js/auto";
-
 import { Chart, registerables } from "chart.js";
-import { ChartOptions } from "chart.js";
 
 Chart.register(...registerables);
 
@@ -12,25 +9,26 @@ function StreamData() {
   const [timestamps, setTimestamps] = useState([]);
 
   useEffect(() => {
-    fetch("/api/hr")
-      .then((response) => response.json())
-      .then((data) => setData(data))
-      .catch((err) => console.log(err));
-  }, []);
+    const intervalId = setInterval(() => {
+      fetch("/api/hr")
+        .then((response) => response.json())
+        .then((data) => setData(data))
+        .catch((err) => console.log(err));
 
-  useEffect(() => {
-    fetch("/api/timestamps")
-      .then((response) => response.json())
-      .then((timestamps) => setTimestamps(timestamps))
-      .catch((err) => console.log(err));
+      fetch("/api/timestamps")
+        .then((response) => response.json())
+        .then((timestamps) => setTimestamps(timestamps))
+        .catch((err) => console.log(err));
+    }, 1000);
+    return () => clearInterval(intervalId);
   }, []);
 
   const [chartData, setChartData] = useState({
-    labels: timestamps,
+    labels: [],
     datasets: [
       {
-        label: "Data",
-        data: data,
+        label: "Heart rate",
+        data: [],
         backgroundColor: "rgba(255, 99, 132, 0.2)",
         borderColor: "rgba(255, 99, 132, 1)",
         borderWidth: 1,
@@ -40,18 +38,37 @@ function StreamData() {
     ],
   });
 
-  const options: ChartOptions<"line"> = {
-    scales: {
-      y: {
-        suggestedMin: 0,
-        suggestedMax: 100,
-      },
-    },
-  };
+  useEffect(() => {
+    if (data.length && timestamps.length) {
+      setChartData({
+        labels: timestamps,
+        datasets: [
+          {
+            label: "Heart rate",
+            data: data,
+            backgroundColor: "rgba(255, 99, 132, 0.2)",
+            borderColor: "rgba(255, 99, 132, 1)",
+            borderWidth: 1,
+            pointRadius: 0,
+            fill: false,
+          },
+        ],
+      });
+    }
+  }, [data, timestamps]);
+
+  // const options: ChartOptions<"line"> = {
+  //   scales: {
+  //     y: {
+  //       suggestedMin: 0,
+  //       suggestedMax: 100,
+  //     },
+  //   },
+  // };
 
   return (
     <>
-      <Line data={chartData} options={options} />
+      <Line data={chartData} />
       <div>
         {data.map((samples: number) => (
           <div key={samples}>{samples.toString()}</div>
@@ -64,8 +81,8 @@ function StreamData() {
 export function HomePage() {
   return (
     <>
-      <div className="flex flex-col md:w-[32rem] text-3xl md:text-4xl font-bold text-center md:mt-32 mb-7">
-        FAQ - Updated throughout the challenge
+      <div className="flex flex-col md:w-[32rem] text-3xl md:text-4xl font-bold text-center mt-16 mb-7">
+        Terra Realtime Websocket Streaming Demo
       </div>
       <StreamData />
     </>
